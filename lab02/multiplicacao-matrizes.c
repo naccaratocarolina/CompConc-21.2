@@ -14,10 +14,9 @@ int nthreads; // Numero de threads a serem criadas
 void * multiplicaMatrizes (void * arg) {
   int id_thread = * (int *) arg;
   
-  printf("Trhead %d\n", id_thread);
-  for (int i=id_thread; i<dim; i=+nthreads) // Linhas de M1
-    for (int j=0; j<dim; j++) // Colunas de M2
-      for (int k=0; k<dim; k++) // Linhas de M1 e colunas de M2
+  for (int i=id_thread; i<dim; i+=nthreads) // Percorre as linhas de M1
+    for (int j=0; j<dim; j++) // Percorre as colunas de M2
+      for (int k=0; k<dim; k++) // Percorre as linhas de M1 e colunas de M2
         saida[i*dim+j] += M1[i*dim+j] * M2[i*dim+j];
 
   pthread_exit(NULL);
@@ -46,7 +45,9 @@ void printaTempo (double inicio, char mensagem[]) {
 int main (int argc, char* argv[]) {
   double inicio;
 
+  // Inicializa a contagem de tempo
   GET_TIME(inicio);
+
   // Leitura e avaliacao dos parametros de entrada
   if (argc < 3) { // Nome do programa + dimensao das matrizes + numero de threads
     printf("Digite: %s <dimensao da matriz> <numero de threads>\n", argv[0]);
@@ -83,6 +84,7 @@ int main (int argc, char* argv[]) {
       resultado[i*dim+j] = 0;
     }
 
+  // Mostra o tempo de inicializacao
   printaTempo(inicio, "inicializacao");
   
   // Multiplicacao matriz*matriz (sequencial)
@@ -91,6 +93,7 @@ int main (int argc, char* argv[]) {
       for (int k=0; k<dim; k++)
         resultado[i*dim+j] += M1[i*dim+j] * M2[i*dim+j];
 
+  //  Mostra o tempo da multiplicacao sequencial
   printaTempo(inicio, "multiplicacao sequencial");
 
   // Criacao das threads
@@ -109,38 +112,8 @@ int main (int argc, char* argv[]) {
     }
   }
   
+  // Mostra o tempo da multiplicacao concorrente
   printaTempo(inicio, "multiplicacao concorrente");
-
-  // Exibicao dos resultados
-  /*
-  puts("Matriz 1 de entrada:");
-  for (int i=0; i<dim; i++) {
-    for (int j=0; j<dim; j++)
-      printf("%.1f ", M1[i*dim+j]);
-    puts("");
-  }
-
-  puts("Matriz 2 de entrada:");
-  for (int i=0; i<dim; i++) {
-    for (int j=0; j<dim; j++)
-      printf("%.1f ", M2[i*dim+j]);
-    puts("");
-  }
-  
-  puts("Matriz de saida:");
-  for (int i=0; i<dim; i++) {
-    for (int j=0; j<dim; j++)
-      printf("%.1f ", saida[i*dim+j]);
-    puts("");
-  }
-  
-  puts("Matriz resultado:");
-  for (int i=0; i<dim; i++) {
-    for (int j=0; j<dim; j++)
-      printf("%.1f ", resultado[i*dim+j]);
-    puts("");
-  }
-  */
 
   // Verifica se o resultado esta correto
   if (!verificaResultado()) {
@@ -153,7 +126,7 @@ int main (int argc, char* argv[]) {
   free(saida);
   free(resultado);
   
-  printf("--Thread principal terminou\n");
+  // Mostra o tempo de finalizacao
   printaTempo(inicio, "finalizacao");
 
   return 0;
