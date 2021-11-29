@@ -87,15 +87,6 @@ int main (int argc, char* argv[]) {
   // Mostra o tempo de inicializacao
   printaTempo(inicio, "inicializacao");
   
-  // Multiplicacao matriz*matriz (sequencial)
-  for (int i=0; i<dim; i++)
-    for (int j=0; j<dim; j++)
-      for (int k=0; k<dim; k++)
-        resultado[i*dim+j] += M1[i*dim+j] * M2[i*dim+j];
-
-  //  Mostra o tempo da multiplicacao sequencial
-  printaTempo(inicio, "multiplicacao sequencial");
-
   // Criacao das threads
   for (thread=0; thread<nthreads; thread++) {
     tid_local[thread] = thread;
@@ -113,9 +104,14 @@ int main (int argc, char* argv[]) {
   }
   
   // Mostra o tempo da multiplicacao concorrente
-  printaTempo(inicio, "multiplicacao concorrente");
+  printaTempo(inicio, "multiplicacao");
 
   // Verifica se o resultado esta correto
+  for (int i=0; i<dim; i++)
+    for (int j=0; j<dim; j++)
+      for (int k=0; k<dim; k++)
+        resultado[i*dim+j] += M1[i*dim+j] * M2[i*dim+j];
+
   if (!verificaResultado()) {
     printf("--ERRO: Valor incorreto no vetor\n"); exit(-1);
   }
