@@ -43,8 +43,17 @@ void * contaOcorrenciasEmIntervalo (void *arg) {
   pthread_exit((void *) contLocal);
 }
 
-float geraFloatAleatorio (long int i) {
+float geraFloatAleatorio () {
   return ((float) rand()) / ((float)RAND_MAX) * 1000.1;
+}
+
+int verificaCorretude (long int contCalculado) {
+  long int contLocal = 0;
+
+  for (long int i=0; i<N; i++) 
+    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) contLocal++;
+
+  return (contLocal == contCalculado);
 }
 
 void printaTempo (double inicio, char mensagem[]) {
@@ -59,7 +68,7 @@ int main (int argc, char *argv[]) {
   long int contConc = 0; // Contador de ocorrencias concorrente
   pthread_t *tid_sistema; // Identificadores das threads no sistema
   long int *retorno; // Valor de retorno das threads
-  double inicio;
+  double inicio; // Variavel que marca o inicio da contagem do tempo
 
   // Recebe e valida os parametros de entrada
   if (argc < 5) {
@@ -80,7 +89,7 @@ int main (int argc, char *argv[]) {
   
   // Preenche o vetor de entrada com valores aleatorios do tipo float
   for (long int i=0; i<N; i++)
-    vetor[i] = geraFloatAleatorio(i);
+    vetor[i] = geraFloatAleatorio();
 
   // Solucao sequencial
   GET_TIME(inicio);
@@ -119,15 +128,26 @@ int main (int argc, char *argv[]) {
   printaTempo(inicio, "concorrente");
 
   // Exibir os resultados
+  /* 
   puts("Elementos do vetor: ");
   for (long int i=0; i<N; i++)
    printf("%.3lf ", vetor[i]);
   puts("");
+  */
 
   printf("Ocorrencias sequencial: %ld\n", contSeq);
   printf("Ocorrencias concorrente: %ld\n", contConc);
 
   // Verificar corretude
+  if (!verificaCorretude(contSeq)) {
+    fprintf(stderr, "--ERRO: Soma incorreta solucao sequencial\n");
+    return 4;
+  }
+  
+  if (!verificaCorretude(contConc)) {
+    fprintf(stderr, "--ERRO: Soma incorreta solucao concorrente\n");
+    return 4;
+  }
 
   // Libera as areas de memoria alocadas
   free(vetor);
