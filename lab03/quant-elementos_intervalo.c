@@ -16,11 +16,11 @@ float *vetor;
 float limiarInferior;
 float limiarSuperior;
 
-void * contaElementosEmInvervalo (void * arg) {
+void * contaOcorrenciasEmIntervalo (void *arg) {
   long int id_thread = (long int) arg; // Identificador da thread
-  long int *contLocal = 0; // Variavel local que vai contar as ocorrencias
+  long int *contLocal; // Variavel local que vai contar as ocorrencias
+  long int tmp = 0;
 
-  printf("Thread %ld\n", id_thread);
   contLocal = (long int *) malloc(sizeof(long int));
   if (contLocal == NULL) {
     fprintf(stderr, "--ERRO: malloc\n");
@@ -35,7 +35,9 @@ void * contaElementosEmInvervalo (void * arg) {
   else fim = ini + tamBloco; // Trata o resto se houver
 
   for (long int i=ini; i<fim; i++)
-    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) contLocal++;
+    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) tmp++;
+
+  *contLocal = tmp;
 
   // Retorna o resultado do contador local
   pthread_exit((void *) contLocal);
@@ -97,20 +99,21 @@ int main (int argc, char *argv[]) {
 
   // Criar as threads
   for (long int i=0; i<nthreads; i++) {
-    if (pthread_create((tid_sistema + i), NULL, contaElementosEmInvervalo, (void *) i));
-    fprintf(stderr, "--ERRO: pthread_create\n");
-    return 3;
+    if(pthread_create(tid_sistema+i, NULL, contaOcorrenciasEmIntervalo, (void *) i)) {
+      fprintf(stderr, "--ERRO: pthread_create\n");
+      return 3;
+    }
   }
 
   // Aguardar o termino das threads
   for (long int i=0; i<nthreads; i++) {
-    if (pthread_join(*(tid_sistema + i), (void **) &retorno)) {
-      fprintf(stderr, "--ERRO: pthread_join\n");
+    if(pthread_join(*(tid_sistema+i), (void**) &retorno)) {
+      fprintf(stderr, "--ERRO: pthread_create\n");
       return 3;
     }
 
     // Contador global
-    contConc += retorno;
+    contConc += *retorno;
   }
 
   printaTempo(inicio, "concorrente");
