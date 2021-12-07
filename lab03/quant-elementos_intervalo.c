@@ -47,15 +47,6 @@ float geraFloatAleatorio () {
   return ((float) rand()) / ((float)RAND_MAX) * 1000.1;
 }
 
-int verificaCorretude (long int contCalculado) {
-  long int contLocal = 0;
-
-  for (long int i=0; i<N; i++) 
-    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) contLocal++;
-
-  return (contLocal == contCalculado);
-}
-
 void printaTempo (double inicio, char mensagem[]) {
   double fim, delta;
   GET_TIME(fim);
@@ -139,16 +130,11 @@ int main (int argc, char *argv[]) {
   printf("Ocorrencias concorrente: %ld\n", contConc);
 
   // Verificar corretude
-  if (!verificaCorretude(contSeq)) {
-    fprintf(stderr, "--ERRO: Soma incorreta solucao sequencial\n");
+  if (contSeq != contConc) {
+    fprintf(stderr, "--ERRO: Soma incorreta.\n");
     return 4;
   }
   
-  if (!verificaCorretude(contConc)) {
-    fprintf(stderr, "--ERRO: Soma incorreta solucao concorrente\n");
-    return 4;
-  }
-
   // Libera as areas de memoria alocadas
   free(vetor);
   free(tid_sistema);
