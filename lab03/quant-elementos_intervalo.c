@@ -35,7 +35,7 @@ void * contaOcorrenciasEmIntervalo (void *arg) {
   else fim = ini + tamBloco; // Trata o resto se houver
 
   for (long int i=ini; i<fim; i++)
-    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) tmp++;
+    if (limiarInferior < vetor[i] && vetor[i] < limiarSuperior) tmp++;
 
   *contLocal = tmp;
 
@@ -85,7 +85,7 @@ int main (int argc, char *argv[]) {
   // Solucao sequencial
   GET_TIME(inicio);
   for (long int i=0; i<N; i++)
-    if (limiarInferior <= vetor[i] && vetor[i] <= limiarSuperior) contSeq++;
+    if (limiarInferior < vetor[i] && vetor[i] < limiarSuperior) contSeq++;
 
   printaTempo(inicio, "sequencial");
 
