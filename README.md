@@ -1,7 +1,7 @@
 # Computacao Concorrente - 2021.2
-* [Modulo 1][#modulo-1]
-* [Modulo 2][#modulo-2]
-* [Modulo 3][#modulo-3]
+* [Modulo 1](#modulo-1)
+* [Modulo 2](#modulo-2)
+* [Modulo 3](#modulo-3)
 
 ## Modulo 1
 - [x] Lab 01
