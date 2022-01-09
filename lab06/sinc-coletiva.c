@@ -17,16 +17,18 @@ int N; // Tamanho do vetor e quantidade de threads a serem criadas
 int *vetor;
 
 /* Funcao barreira */
-void barreira (int nthreads) {
+void barreira (int nthreads, int id_thread) {
   //--inicio SC
   pthread_mutex_lock(&mutex);
 
   if (bloqueadas == (nthreads - 1)) {
-    // ultima thread a chegar na barreira
+    // Ultima thread a chegar na barreira
+    printf("Thread %d foi a ultima a chegar na barreira e esta liberando as demais que estao em espera ocupada\n", id_thread);
     pthread_cond_broadcast(&cond);
     bloqueadas = 0;
   } else {
     bloqueadas++;
+    printf("Thread %d aguardando na barreira...\n", id_thread);
     pthread_cond_wait(&cond, &mutex);
   }
 
@@ -40,6 +42,8 @@ void * somaElementos (void *arg) {
   long int id_thread = (long int) arg; // Identificador da thread
   int *somaLocal; // Variavel local que vai somar os elementos do vetor
   
+  printf("Thread %ld executando...\n", id_thread);
+  
   somaLocal = (int *) malloc(sizeof(int));
   if (somaLocal == NULL) {
     fprintf(stderr, "--ERRO: malloc\n");
@@ -52,14 +56,14 @@ void * somaElementos (void *arg) {
       *somaLocal += vetor[j];
 
     // Aguardar todas as threads terminarem suas somas
-    barreira(N);
+    barreira(N, id_thread);
 
     // Gerar um novo valor aleatorio e escrever na posicao do
     // vetor de inteiros correspondente ao seu identificador
     vetor[id_thread] = rand() % 10;
 
     // Aguardar demais threads terminarem esse passo
-    barreira(N);
+    barreira(N, id_thread);
   }
 
   pthread_exit((void *) somaLocal);
@@ -125,8 +129,14 @@ int main (int argc, char* argv[]) {
     somaGlobal[i] = *retorno;
   }
 
+  puts("");
+
   // Verificar corretude
+  printf("Somas realizadas pelas threads:\n");
   for (int i=1; i<N; i++) {
+    printf("Thread %d calculou %d\n", i, somaGlobal[i]);
+
+    // Verifica se a mesma soma foi encontrada por todas as threads
     if (somaGlobal[i - 1] != somaGlobal[i]) {
       printf("--ERRO: Divergencia no indice %d: %d != %d", i, somaGlobal[i - 1], somaGlobal[i]);
       return 4;
