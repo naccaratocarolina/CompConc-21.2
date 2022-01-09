@@ -11,9 +11,9 @@
 
 ## Modulo 2
 - [x] Lab 05
-- [ ] Lab 06
+- [x] Lab 06
 - [ ] Lab 07
-- [ ] Lista 1
+- [x] Lista 1
 - [ ] Trabalho 1
 
 ## Modulo 3
