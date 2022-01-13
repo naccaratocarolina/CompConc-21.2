@@ -12,7 +12,7 @@
 ## Modulo 2
 - [x] Lab 05
 - [x] Lab 06
-- [ ] Lab 07
+- [x] Lab 07
 - [x] Lista 1
 - [ ] Trabalho 1
 
