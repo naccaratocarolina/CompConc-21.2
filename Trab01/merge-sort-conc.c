@@ -80,11 +80,27 @@ void * merge_sort(void * arg) {
         Args args2 = {meio + 1, fim};
 
         // Conquista
-        pthread_create(&t1, NULL, merge_sort, &args1);
-        pthread_create(&t2, NULL, merge_sort, &args2);
+        // Cria as threads
+        if (pthread_create(&t1, NULL, merge_sort, &args1)) {
+            fprintf(stderr, "--ERRO: pthread_create\n");
+            exit(3);
+        }
 
-        pthread_join(t1, NULL);
-        pthread_join(t2, NULL);
+        if (pthread_create(&t2, NULL, merge_sort, &args2)) {
+            fprintf(stderr, "--ERRO: pthread_create\n");
+            exit(3);
+        }
+
+        // Aguarda o termino das threads
+        if (pthread_join(t1, NULL)) {
+            fprintf(stderr, "--ERRO: pthread_join\n");
+            exit(3);
+        }
+
+        if (pthread_join(t2, NULL)) {
+            fprintf(stderr, "--ERRO: pthread_join\n");
+            exit(3);
+        }
 
         // Combina
         merge(ini, meio, fim);
@@ -120,10 +136,16 @@ int main(int argc, char  *argv[]) {
     Args args = {0, dim - 1};
 
     // Cria a thread
-    pthread_create(&t, NULL, merge_sort, &args);
+    if (pthread_create(&t, NULL, merge_sort, &args)) {
+        fprintf(stderr, "--ERRO: pthread_create\n");
+        return 3;
+    }
 
     // Aguarda o termino das threads
-    pthread_join(t, NULL);
+    if (pthread_join(t, NULL)) {
+        fprintf(stderr, "--ERRO: pthread_join\n");
+        return 3;
+    }
 
     // Exibe resultados
     printf("Vetor ordenado: \n");
