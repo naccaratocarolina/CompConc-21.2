@@ -13,13 +13,7 @@ long long int dim;
 int nthreads;
 
 struct timeval inicio, fim;
-int tempo; // # milissegundos de tempo decorrido
-
-void preenche (int a[], int dim) {
-    for (long int i=0; i<dim; i++)
-        // Gera um inteiro dentro do intervalo [0, dim]
-        a[i] = rand() % dim;
-}
+long tempo; // # milissegundos de tempo decorrido
 
 int main (int argc, char *argv[]) {
     // Leitura e avaliacao dos parametros de entrada
@@ -39,7 +33,7 @@ int main (int argc, char *argv[]) {
     // Aloca o vetor de entrada e tmp
     a = (int *) malloc(sizeof(int) * dim);
     if (a == NULL) {
-        fprintf(stderr, "--ERRO: malloc\n");
+        perror("--ERRO: malloc");
         return 2;
     }
 
@@ -65,12 +59,13 @@ int main (int argc, char *argv[]) {
 
     // Imprime tempo decorrido
     tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
-    printf("Tempo decorrido = %d milissegundos\n", tempo);
+    printf("Tempo decorrido = %ld milissegundos\n", tempo);
 
     /* ==========================================================
         Versao Concorrente
        ========================================================== */
     puts("\nVersão Concorrente");
+
     // Preenche o vetor de entrada com inteiros aleatorios
     preenche(a, dim);
 
@@ -89,5 +84,5 @@ int main (int argc, char *argv[]) {
 
     // Imprime tempo decorrido
     tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
-    printf("Tempo decorrido = %d milissegundos\n", tempo);
+    printf("Tempo decorrido = %ld milissegundos\n", tempo);
 }

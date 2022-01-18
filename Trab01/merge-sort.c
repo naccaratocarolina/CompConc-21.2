@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include "merge-sort.h"
 
-void merge (int a[], int ini, int meio, int fim) {
+void merge (int a[], long long int ini, long long int meio, long long int fim) {
     // Computa o tamanho das subsequencias
-    int tam1 = meio - ini + 1;
-    int tam2 = fim - meio;
+    long long int tam1 = meio - ini + 1;
+    long long int tam2 = fim - meio;
 
     // Inicializa subsequencias da esq e dir
     // E[ini...meio], D[meio + 1...fim]
-    int E[tam1], D[tam2];
+    long long int E[tam1], D[tam2];
 
-    for (int i=0; i < tam1; i++)
+    for (long long int i=0; i < tam1; i++)
         E[i] = a[ini + i];
 
-    for (int j=0; j < tam2; j++)
+    for (long long int j=0; j < tam2; j++)
         D[j] = a[meio + 1 + j];
 
     // Seleciona os menores elementos das sequencias
-    int i = 0;
-    int j = 0;
-    int k = ini;
+    long long int i = 0;
+    long long int j = 0;
+    long long int k = ini;
 
     while (i < tam1 && j < tam2) {
         if (E[i] <= D[j]) {
@@ -49,10 +49,10 @@ void merge (int a[], int ini, int meio, int fim) {
     }
 }
 
-void merge_sort (int a[], int ini, int fim) {
+void merge_sort (int a[], long long int ini, long long int fim) {
     if (ini < fim) {
         // Divide
-        int meio = (ini + fim)/2;
+        long long int meio = (ini + fim)/2;
 
         // Conquista
         merge_sort(a, ini, meio);
@@ -63,18 +63,24 @@ void merge_sort (int a[], int ini, int fim) {
     }
 }
 
-void imprime (int a[], int dim) {
-    for (int i=0; i<dim; i++)
+void imprime (int a[], long long int dim) {
+    for (long long int i=0; i<dim; i++)
         printf("%d ", a[i]);
     puts("");
 }
 
-void verificaCorretude (int a[], int dim) {
-    for (int i=1; i<dim; i++)
+void verificaCorretude (int a[], long long int dim) {
+    for (long long int i=1; i<dim; i++)
         if (a[i - 1] > a[i]) {
             fprintf(stderr,
-                    "--ERRO: a[%d] = %d e a[%d] = %d estao fora de ordem!\n",
+                    "--ERRO: a[%lld] = %d e a[%lld] = %d estao fora de ordem!\n",
                     i - 1, a[i - 1], i, a[i]);
             exit(1);
         }
+}
+
+void preenche (int a[], long long int dim) {
+    for (long long int i=0; i<dim; i++)
+        // Gera um inteiro dentro do intervalo [0, dim]
+        a[i] = rand() % (int) dim;
 }

@@ -19,7 +19,7 @@ void * p_merge_sort (void * arg);
  * @param a vetor de entrada
  * @param dim dimensao do vetor de entrada
  */
-void t2 (int a[], int dim);
+void t2 (int a[], long long int dim);
 
 /**
  * Se nthreads = 4, temos que realizar a etapa do
@@ -32,4 +32,4 @@ void t2 (int a[], int dim);
  * @param a vetor de entrada
  * @param dim dimensao do vetor de entrada
  */
-void t4 (int a[], int dim);
+void t4 (int a[], long long int dim) ;
