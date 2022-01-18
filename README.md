@@ -8,16 +8,18 @@
 - [x] Lab 02
 - [x] Lab 03
 - [x] Lab 04
+- [x] Lista 1
 
 ## Modulo 2
 - [x] Lab 05
 - [x] Lab 06
 - [x] Lab 07
+- [x] Lab 08
 - [x] Lista 1
 - [ ] Trabalho 1
 
 ## Modulo 3
-- [ ] Lab 08
 - [ ] Lab 09
+- [ ] Lab 10
 - [ ] Lista 2
 - [ ] Trabalho 2
