@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+#include "merge-sort.h"
+#include "p-merge-sort.h"
+
+/* ==========================================================
+   Variaveis Globais
+   ========================================================== */
+int *a;
+long long int dim;
+int nthreads;
+
+struct timeval inicio, fim;
+int tempo; // # milissegundos de tempo decorrido
+
+void preenche (int a[], int dim) {
+    for (long int i=0; i<dim; i++)
+        // Gera um inteiro dentro do intervalo [0, dim]
+        a[i] = rand() % dim;
+}
+
+int main (int argc, char *argv[]) {
+    // Leitura e avaliacao dos parametros de entrada
+    if (argc < 3) {
+        fprintf(stderr, "Digite: %s <dimensao do vetor> <numero de threads>\n", argv[0]);
+        return 1;
+    }
+
+    dim = atoll(argv[1]);
+    nthreads = atoi(argv[2]);
+
+    if (nthreads != 2 && nthreads != 4) {
+        fprintf(stderr, "--ERRO: Numero de threads fornecido não é aceito. Digite: 2 ou 4.\n");
+        return 1;
+    }
+
+    // Aloca o vetor de entrada e tmp
+    a = (int *) malloc(sizeof(int) * dim);
+    if (a == NULL) {
+        fprintf(stderr, "--ERRO: malloc\n");
+        return 2;
+    }
+
+    /* ==========================================================
+        Versao Sequencial
+       ========================================================== */
+    puts("Versão Sequencial");
+
+    // Preenche o vetor de entrada com inteiros aleatorios
+    preenche(a, dim);
+
+    // Comeca contagem do tempo
+    gettimeofday(&inicio, NULL);
+
+    // Ordena vetor
+    merge_sort(a, 0, dim);
+
+    // Encerra contagem do tempo
+    gettimeofday(&fim, NULL);
+
+    // Verifica corretude
+    verificaCorretude(a, dim);
+
+    // Imprime tempo decorrido
+    tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
+    printf("Tempo decorrido = %d milissegundos\n", tempo);
+
+    /* ==========================================================
+        Versao Concorrente
+       ========================================================== */
+    puts("\nVersão Concorrente");
+    // Preenche o vetor de entrada com inteiros aleatorios
+    preenche(a, dim);
+
+    // Comeca contagem do tempo
+    gettimeofday(&inicio, NULL);
+
+    // Ordena vetor
+    if (nthreads == 2) t2(a, dim);
+    else if (nthreads == 4) t4(a, dim);
+
+    // Encerra contagem do tempo
+    gettimeofday(&fim, NULL);
+
+    // Verifica corretude
+    verificaCorretude(a, dim);
+
+    // Imprime tempo decorrido
+    tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
+    printf("Tempo decorrido = %d milissegundos\n", tempo);
+}

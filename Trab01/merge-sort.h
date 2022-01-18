@@ -1,0 +1,41 @@
+/**
+ * Combina duas subsequencias ordenadas para produzir
+ * o vetor final ordenado (ini <= meio < fim).
+ *
+ * @param a vetor de entrada
+ * @param ini indice inicial do vetor de entrada
+ * @param meio indice central do vetor de entrada
+ * @param fim indice final do vetor de entrada
+ */
+void merge (int a[], int ini, int meio, int fim);
+
+/**
+ * Realiza chamadas recursivas a si mesma, criando
+ * subproblemas da mesma instancia. A cada recursao,
+ * divide o vetor em duas partes iguais e as ordena.
+ * Em seguida, chama a funcao merge para combinar as
+ * sequencias ordenadas, dois a dois, ate que o vetor
+ * de entrada esteja ordenado por completo.
+ *
+ * @param a vetor de entrada
+ * @param ini indice inicial do vetor de entrada
+ * @param fim indice final do vetor de entrada
+ */
+void merge_sort (int a[], int ini, int fim);
+
+/**
+ * Imprime na tela o vetor fornecido como parametro.
+ *
+ * @param a vetor de entrada
+ * @param dim dimensao do vetor de entrada
+ */
+void imprime (int a[], int dim);
+
+/**
+ * Verifica corretude da ordenacao, se assegurando
+ * que o vetor de entrada esta em ordem crescente.
+ *
+ * @param a vetor de entrada
+ * @param dim dimensao do vetor de entrada
+ */
+void verificaCorretude (int a[], int dim);
