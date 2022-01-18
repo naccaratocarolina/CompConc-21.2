@@ -19,7 +19,6 @@ class Monitor {
         this.escritores = 0; // escritor escrevendo (0 ou 1)
     }
 
-
     /**
      * Entrada para leitores
      * @param id identificador da thread
@@ -101,7 +100,7 @@ class Leitora extends Thread {
     }
 
     /**
-     * Verifica se a variavel gloval compartilhada entre as threads
+     * Verifica se a variavel global compartilhada entre as threads
      * eh par ou impar.
      * @return true se for par; false, c.c.
      */
