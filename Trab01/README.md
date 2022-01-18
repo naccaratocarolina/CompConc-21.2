@@ -1,4 +1,4 @@
-# Merge Sort Multithreaded
+# Merge Sort Multithread
 Esta aplicacao implementa o algoritmo do Merge Sort na versao concorrente.
 
 ## Setup
