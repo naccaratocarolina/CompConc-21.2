@@ -1,3 +1,0 @@
-/home/carolina/Documents/CompConc/Trab01/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/carolina/Documents/CompConc/Trab01/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/carolina/Documents/CompConc/Trab01/cmake-build-debug/CMakeFiles/Trab01.dir
