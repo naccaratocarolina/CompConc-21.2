@@ -5,107 +5,98 @@
 
 #include "merge-sort.h"
 
-typedef struct indices Indices;
-struct indices {
-    int* a; // vetor a ser ordenado
-    long long int ini, fim; // indices de inicio e fim
+typedef struct args Args;
+struct args {
+    int id_thread;
+    int* a;
+    long long int dim;
+    int nthreads;
 };
 
+void p_merge (int a[], long long dim, int nthreads) {
+    int NUMEROS_POR_THREAD = dim / nthreads;
+    int OFFSET = dim % nthreads;
+
+    for (int i = nthreads; i > 1; i = i/2) {
+        for (int j = 0; j < i; j+=2) {
+            long long int ini = j * NUMEROS_POR_THREAD * (nthreads/i);
+            long long int fim = (j + 2) * NUMEROS_POR_THREAD * (nthreads/i) - 1;
+
+            long long int meio = ini + (fim - ini) / 2;
+
+            if ((j+2)*(nthreads/i) == nthreads) fim +=OFFSET;
+
+            merge(a, ini, meio, fim);
+        }
+    }
+}
+
 void * p_merge_sort (void *arg) {
-    Indices indices = * ((Indices *) arg);
-    int* a = indices.a;
-    long long int ini = indices.ini;
-    long long int fim = indices.fim;
+    Args args = * ((Args *) arg);
+
+    int id_thread = args.id_thread;
+    int* a = args.a;
+    long long int dim = args.dim;
+    int nthreads = args.nthreads;
+
+    int NUMEROS_POR_THREAD = dim / nthreads;
+    int OFFSET = dim % nthreads;
+
+    long long int ini = id_thread * NUMEROS_POR_THREAD;
+    long long int fim = (id_thread + 1) * NUMEROS_POR_THREAD - 1;
+
+    if (id_thread == nthreads - 1) fim += OFFSET;
 
     if (ini < fim) {
         // Divide
         long long int meio = ini + (fim - ini) / 2;
 
-        pthread_t t1;
-        Indices indices1 = {a, ini, meio};
-
-        pthread_t t2;
-        Indices indices2 = {a, meio + 1, fim};
-
         // Conquista
-        if (pthread_create(&t1, NULL, p_merge_sort, &indices1)) {
-            perror("--ERRO: pthread_create");
-            exit(3);
-        }
-
-        if (pthread_create(&t2, NULL, p_merge_sort, &indices2)) {
-            perror("--ERRO: pthread_create");
-            exit(3);
-        }
+        merge_sort(a, ini, meio);
+        merge_sort(a, meio + 1, fim);
 
         // Combina
-        if (pthread_join(t1, NULL)) {
-            perror("--ERRO: pthread_join");
-            exit(3);
-        }
-
-        if (pthread_join(t2, NULL)) {
-            perror("--ERRO: pthread_join");
-            exit(3);
-        }
-
         merge(a, ini, meio, fim);
     }
+
+    free(arg);
 
     pthread_exit(NULL);
 }
 
-void t2 (int a[], long long int dim) {
-    pthread_t t; // Identificador da thread principal
+void ordena (int a[], long long int dim, int nthreads) {
+    pthread_t *tid_sistema; // Identificadores das threads
 
-    Indices indices = {a, 0, dim - 1};
-
-    // Cria a thread
-    if (pthread_create(&t, NULL, p_merge_sort, &indices)) {
-        perror("--ERRO: pthread_create");
-        exit(3);
+    // Aloca espaco para vetor de identificadores
+    tid_sistema = (pthread_t *) malloc(sizeof(pthread_t) * nthreads);
+    if (tid_sistema == NULL) {
+        perror("--ERRO: malloc");
+        exit(2);
     }
-
-    // Aguarda o termino da thread
-    if (pthread_join(t, NULL)) {
-        perror("--ERRO: pthread_join");
-        exit(3);
-    }
-}
-
-void t4 (int a[], long long int dim) {
-    long long int ini = 0;
-    long long int fim = dim - 1;
-    long long int meio = ini + (fim - ini) / 2;
-
-    pthread_t t1;
-    Indices indices1 = {a, ini, meio};
-
-    pthread_t t2;
-    Indices indices2 = {a, meio + 1, fim};
 
     // Cria as threads
-    if (pthread_create(&t1, NULL, p_merge_sort, &indices1)) {
-        perror("--ERRO: pthread_create");
-        exit(3);
+    for (long int i=0; i<nthreads; i++) {
+        Args* args = (Args *) malloc(sizeof(Args));
+
+        args->id_thread = i;
+        args->nthreads = nthreads;
+        args->dim = dim;
+        args->a = a;
+
+        if (pthread_create(tid_sistema+i, NULL, p_merge_sort, args)) {
+            perror("--ERRO: pthread_create");
+            exit(3);
+        }
     }
 
-    if (pthread_create(&t2, NULL, p_merge_sort, &indices2)) {
-        perror("--ERRO: pthread_create");
-        exit(3);
+    // Aguarda o termino
+    for (long int i=0; i<nthreads; i++) {
+        if(pthread_join(*(tid_sistema+i), NULL)) {
+            perror("--ERRO: pthread_join");
+            exit(3);
+        }
     }
 
-    // Aguarda o termino das threads
-    if (pthread_join(t1, NULL)) {
-        perror("--ERRO: pthread_join");
-        exit(3);
-    }
-
-    if (pthread_join(t2, NULL)) {
-        perror("--ERRO: pthread_join");
-        exit(3);
-    }
-
-    // Combina
-    merge(a, ini, meio, fim);
+    // Combina os subvetores ordenados pelas threads
+    p_merge(a, dim, nthreads);
 }
