@@ -41,9 +41,10 @@ void imprime (int a[], long long int dim);
 void verificaCorretude (int a[], long long int dim);
 
 /**
- * Preenche o vetor com numeros aleatorios.
+ * Preenche o vetor com numeros aleatorios proporcionais
+ * a dimensao do vetor.
  *
- * @param a
- * @param dim
+ * @param a vetor de entrada
+ * @param dim dimensao do vetor de entrada
  */
 void preenche (int a[], long long int dim);

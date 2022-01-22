@@ -54,4 +54,11 @@ void * p_merge_sort (void * arg);
  * @param dim dimensao do vetor de entrada
  * @param nthreads numero de threads
  */
-void ordena (int a[], long long int dim, int nthreads);
+void p_ordena (int a[], long long int dim, int nthreads);
+
+/**
+ * Garante que o numero de threads eh uma potencia de 2.
+ * @param nthreads numero de threads
+ * @return 1, se nthreads for potencia de 2; 0, c.c.
+ */
+int ehPotenciaDeDois (int nthreads);

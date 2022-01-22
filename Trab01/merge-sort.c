@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "merge-sort.h"
 
 void merge (int a[], long long int ini, long long int meio, long long int fim) {

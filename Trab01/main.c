@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<pthread.h>
 #include <sys/time.h>
 
 #include "merge-sort.h"
@@ -26,8 +25,8 @@ int main (int argc, char *argv[]) {
     dim = atoll(argv[1]);
     nthreads = atoi(argv[2]);
 
-    if (nthreads % 2 != 0) {
-        fprintf(stderr, "--ERRO: Numero de threads deve ser multiplo de 2.\n");
+    if (!ehPotenciaDeDois(nthreads)) {
+        fprintf(stderr, "--ERRO: Numero de threads deve ser potencia de 2.\n");
         return 1;
     }
 
@@ -74,7 +73,7 @@ int main (int argc, char *argv[]) {
     gettimeofday(&inicio, NULL);
 
     // Ordena vetor
-    ordena(a, dim, nthreads);
+    p_ordena(a, dim, nthreads);
 
     // Encerra contagem do tempo
     gettimeofday(&fim, NULL);

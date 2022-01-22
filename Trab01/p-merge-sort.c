@@ -1,7 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<pthread.h>
-#include<signal.h>
+#include <math.h>
 
 #include "merge-sort.h"
 
@@ -64,7 +64,7 @@ void * p_merge_sort (void *arg) {
     pthread_exit(NULL);
 }
 
-void ordena (int a[], long long int dim, int nthreads) {
+void p_ordena (int a[], long long int dim, int nthreads) {
     pthread_t *tid_sistema; // Identificadores das threads
 
     // Aloca espaco para vetor de identificadores
@@ -99,4 +99,8 @@ void ordena (int a[], long long int dim, int nthreads) {
 
     // Combina os subvetores ordenados pelas threads
     p_merge(a, dim, nthreads);
+}
+
+int ehPotenciaDeDois (int nthreads) {
+    return (ceil(log2(nthreads)) == floor(log2(nthreads)));
 }
