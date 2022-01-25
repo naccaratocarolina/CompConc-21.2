@@ -19,7 +19,7 @@
 - [ ] Trabalho 1
 
 ## Modulo 3
-- [ ] Lab 09
+- [x] Lab 09
 - [ ] Lab 10
 - [ ] Lista 2
 - [ ] Trabalho 2
