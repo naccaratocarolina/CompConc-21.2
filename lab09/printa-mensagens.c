@@ -79,7 +79,7 @@ void * t5 (void * arg)  {
   printf("Seja bem-vindo!\n");
 
   // Libera  as threads 2, 3 e 4, incrementando
-  // as suas variaveis semaforo
+  // a sua variavel semaforo
   sem_post(&sem_5);
   sem_post(&sem_5);
   sem_post(&sem_5);
