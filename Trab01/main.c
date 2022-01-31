@@ -9,6 +9,7 @@
    Variaveis Globais
    ========================================================== */
 int *a;
+int *b;
 long long int dim;
 int nthreads;
 
@@ -30,20 +31,26 @@ int main (int argc, char *argv[]) {
         return 1;
     }
 
-    // Aloca o vetor de entrada e tmp
+    // Aloca o vetor de entrada
     a = (int *) malloc(sizeof(int) * dim);
     if (a == NULL) {
         perror("--ERRO: malloc");
         return 2;
     }
 
+    b = (int *) malloc(sizeof(int) * dim);
+    if (b == NULL) {
+        perror("--ERRO: malloc");
+        return 2;
+    }
+
+    // Preenche o vetor de entrada com inteiros aleatorios
+    preenche(a, b, dim);
+
     /* ==========================================================
         Versao Sequencial
        ========================================================== */
     puts("Versão Sequencial");
-
-    // Preenche o vetor de entrada com inteiros aleatorios
-    preenche(a, dim);
 
     // Comeca contagem do tempo
     gettimeofday(&inicio, NULL);
@@ -66,14 +73,11 @@ int main (int argc, char *argv[]) {
        ========================================================== */
     puts("\nVersão Concorrente");
 
-    // Preenche o vetor de entrada com inteiros aleatorios
-    preenche(a, dim);
-
     // Comeca contagem do tempo
     gettimeofday(&inicio, NULL);
 
     // Ordena vetor
-    p_ordena(a, dim, nthreads);
+    p_ordena(b, dim, nthreads);
 
     // Encerra contagem do tempo
     gettimeofday(&fim, NULL);

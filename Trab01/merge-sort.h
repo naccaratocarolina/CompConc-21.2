@@ -42,9 +42,10 @@ void verificaCorretude (int a[], long long int dim);
 
 /**
  * Preenche o vetor com numeros aleatorios proporcionais
- * a dimensao do vetor.
+ * a dimensao do vetor. Alem disso, faz uma copia do
+ * vetor a para o vetor b.
  *
  * @param a vetor de entrada
  * @param dim dimensao do vetor de entrada
  */
-void preenche (int a[], long long int dim);
+void preenche (int a[], int b[], long long int dim);

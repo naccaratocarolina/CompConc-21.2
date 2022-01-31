@@ -80,8 +80,10 @@ void verificaCorretude (int a[], long long int dim) {
         }
 }
 
-void preenche (int a[], long long int dim) {
-    for (long long int i=0; i<dim; i++)
+void preenche (int a[], int b[], long long int dim) {
+    for (long long int i=0; i<dim; i++) {
         // Gera um inteiro dentro do intervalo [0, dim]
         a[i] = rand() % (int) dim;
+        b[i] = a[i];
+    }
 }
