@@ -8,8 +8,8 @@
 /* ==========================================================
    Variaveis Globais
    ========================================================== */
-int *a;
-int *b;
+int *a; // vetor de entrada para o merge sort sequencial
+int *b; // vetor de entrado para o merge sort concorrente
 long long int dim;
 int nthreads;
 
