@@ -66,7 +66,7 @@ int main (int argc, char *argv[]) {
 
     // Imprime tempo decorrido
     tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
-    printf("Tempo decorrido = %ld milissegundos\n", tempo);
+    printf("Tempo decorrido = %ld microssegundos\n", tempo);
 
     /* ==========================================================
         Versao Concorrente
@@ -83,9 +83,13 @@ int main (int argc, char *argv[]) {
     gettimeofday(&fim, NULL);
 
     // Verifica corretude
-    verificaCorretude(a, dim);
+    verificaCorretude(b, dim);
 
     // Imprime tempo decorrido
     tempo = (fim.tv_sec*1000000 + fim.tv_usec) - (inicio.tv_sec*1000000 + inicio.tv_usec);
-    printf("Tempo decorrido = %ld milissegundos\n", tempo);
+    printf("Tempo decorrido = %ld microssegundos\n", tempo);
+
+    // Desaloca e termina
+    free(a);
+    free(b);
 }
