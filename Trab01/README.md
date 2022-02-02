@@ -11,7 +11,7 @@ https://github.com/naccaratocarolina/CompConc-21.2
 
 ### 2. Navegue para a pasta ```/Trab1```
 ```
-cd /Trab1
+cd /Trab01
 ```
 
 ### 3. Compile o arquivo principal
