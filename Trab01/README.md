@@ -9,7 +9,7 @@ Esta aplicação implementa o algoritmo do Merge Sort na versão concorrente. A 
 https://github.com/naccaratocarolina/CompConc-21.2
 ```
 
-### 2. Navegue para a pasta ```/Trab1```
+### 2. Navegue para a pasta ```/Trab01```
 ```
 cd /Trab01
 ```
