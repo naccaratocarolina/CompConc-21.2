@@ -25,4 +25,3 @@
 - [x] Lab 09
 - [x] Lab 10
 - [ ] Lista 2
-- [ ] Trabalho 2
