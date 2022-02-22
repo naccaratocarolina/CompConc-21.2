@@ -1,4 +1,4 @@
-# Computacao Concorrente - 2021.2
+# Computação Concorrente - 2021.2 UFRJ
 ![Badge](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
 ![Badge](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 
