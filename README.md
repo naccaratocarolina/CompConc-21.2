@@ -18,7 +18,7 @@
 - [x] Lab 07 :pushpin: 70/100
 - [x] Lab 08 :pushpin: 100/100
 - [x] Lista 1
-- [x] Trabalho 1
+- [x] Trabalho
 
 ## Modulo 3
 - [x] Lab 09 :pushpin: 100/100
