@@ -24,4 +24,4 @@
 ## Modulo 3
 - [x] Lab 09
 - [x] Lab 10
-- [ ] Lista 2
+- [x] Lista 2
